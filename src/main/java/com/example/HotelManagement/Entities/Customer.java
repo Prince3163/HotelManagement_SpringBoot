@@ -1,27 +1,31 @@
 package com.example.HotelManagement.Entities;
 
-import com.example.HotelManagement.Objects.ContactInfo;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 
 @Entity
 public class Customer {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    @NotNull
+    private long custId;
 
+    @NotBlank(message = "Name can't be null.")
     private String name;
 
-    private ContactInfo contactInfo;
+    @Column( unique = true )
+    @Email(message = "Please enter a valid EMAIL.")
+    private String email;
 
-    public int getId() {
-        return id;
+    public long getCustId() {
+        return custId;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public void setCustId( long custId) {
+        this.custId = custId;
     }
 
     public String getName() {
@@ -32,11 +36,11 @@ public class Customer {
         this.name = name;
     }
 
-    public ContactInfo getContactInfo() {
-        return contactInfo;
+    public String getEmail() {
+        return email;
     }
 
-    public void setContactInfo(ContactInfo contactInfo) {
-        this.contactInfo = contactInfo;
+    public void setEmail(String email) {
+        this.email = email;
     }
 }
