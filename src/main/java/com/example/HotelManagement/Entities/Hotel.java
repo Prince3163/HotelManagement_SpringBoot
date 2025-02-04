@@ -1,10 +1,12 @@
 package com.example.HotelManagement.Entities;
 
-import com.example.HotelManagement.Objects.ContactInfo;
 import jakarta.persistence.*;
-import org.springframework.boot.autoconfigure.web.WebProperties;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.*;
+import org.hibernate.validator.constraints.Length;
+import org.hibernate.validator.constraints.Range;
+import org.springframework.format.annotation.NumberFormat;
 
-import javax.annotation.processing.Generated;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -13,21 +15,30 @@ public class Hotel {
 
     @Id
     @GeneratedValue (strategy = GenerationType.IDENTITY)
-    private int id;
+    @NotNull
+    private long hotelId;
 
+    @NotBlank(message = "Name can't be blank.")
+    @Column(nullable = false)
     private String name;
+
+    @NotBlank(message = "Location can't be blank.")
+    @Column(nullable = false)
     private String location;
-    private ContactInfo contactInfo;
 
-    @OneToMany(mappedBy = "hotel")
-    private List<Room> roomList = new ArrayList<>();
+    @Email(message = "Please, Enter a valid email.")
+    @Column(unique = true , nullable = false)
+    private String email;
 
-    public int getId() {
-        return id;
+    @OneToMany(mappedBy = "hotel" , cascade = CascadeType.ALL)
+    private List<Room> roomsList = new ArrayList<>();
+
+    public long getId() {
+        return hotelId;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public void setId(long hotelId) {
+        this.hotelId = hotelId;
     }
 
     public String getName() {
@@ -46,19 +57,19 @@ public class Hotel {
         this.location = location;
     }
 
-    public ContactInfo getContactInfo() {
-        return contactInfo;
+    public String getEmail() {
+        return email;
     }
 
-    public void setContactInfo(ContactInfo contactInfo) {
-        this.contactInfo = contactInfo;
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     public List<Room> getRoomList() {
-        return roomList;
+        return roomsList;
     }
 
     public void setRoomList(List<Room> roomList) {
-        this.roomList = roomList;
+        this.roomsList = roomList;
     }
 }
