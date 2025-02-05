@@ -14,6 +14,4 @@ public interface HotelServices {
     public void deleteHotelById(long hotelId);
     public void updateHotel(Hotel hotel);
 
-//    public List<Room> displayRoomsByHotelId(int hotelId);
-//    public List<Room> displayAvailableRoomsByHotelId(int hotelId);
 }

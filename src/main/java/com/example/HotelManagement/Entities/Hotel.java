@@ -1,11 +1,8 @@
 package com.example.HotelManagement.Entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
-import jakarta.validation.Valid;
 import jakarta.validation.constraints.*;
-import org.hibernate.validator.constraints.Length;
-import org.hibernate.validator.constraints.Range;
-import org.springframework.format.annotation.NumberFormat;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,12 +30,25 @@ public class Hotel {
     @OneToMany(mappedBy = "hotel" , cascade = CascadeType.ALL)
     private List<Room> roomsList = new ArrayList<>();
 
+    public long getHotelId() {
+        return hotelId;
+    }
+
+    public void setHotelId(long hotelId) {
+        this.hotelId = hotelId;
+    }
+
+    @JsonIgnore
     public long getId() {
         return hotelId;
     }
 
-    public void setId(long hotelId) {
-        this.hotelId = hotelId;
+    public List<Room> getRoomsList() {
+        return roomsList;
+    }
+
+    public void setRoomsList(List<Room> roomsList) {
+        this.roomsList = roomsList;
     }
 
     public String getName() {
@@ -65,11 +75,5 @@ public class Hotel {
         this.email = email;
     }
 
-    public List<Room> getRoomList() {
-        return roomsList;
-    }
 
-    public void setRoomList(List<Room> roomList) {
-        this.roomsList = roomList;
-    }
 }

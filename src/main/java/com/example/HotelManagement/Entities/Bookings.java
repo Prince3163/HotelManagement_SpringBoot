@@ -1,15 +1,11 @@
 package com.example.HotelManagement.Entities;
 
 import com.example.HotelManagement.Enum.StatusOfBooking;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Future;
 import jakarta.validation.constraints.FutureOrPresent;
-import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
-import org.hibernate.validator.constraints.Range;
-
-import java.sql.Date;
-import java.text.DateFormat;
 import java.time.LocalDate;
 
 @Entity
@@ -19,10 +15,12 @@ public class Bookings {
     @NotNull
     private long id;
 
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "customer_id" , nullable = false)
     private Customer customer;
 
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "room_id" , nullable = false)
     private Room room;
@@ -30,7 +28,7 @@ public class Bookings {
     @FutureOrPresent(message = "You can't book for past date.")
     private LocalDate checkInDate;
 
-    @FutureOrPresent(message = "You can't book for past date.")
+    @Future(message = "You can't book for past date.")
     private LocalDate checkOutDate;
 
     @Enumerated(EnumType.STRING)
@@ -83,4 +81,5 @@ public class Bookings {
     public void setStatusOfBooking(StatusOfBooking statusOfBooking) {
         this.statusOfBooking = statusOfBooking;
     }
+
 }

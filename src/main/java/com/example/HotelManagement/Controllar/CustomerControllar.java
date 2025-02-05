@@ -1,10 +1,13 @@
 package com.example.HotelManagement.Controllar;
 
+import com.example.HotelManagement.Entities.Bookings;
 import com.example.HotelManagement.Entities.Customer;
-import com.example.HotelManagement.Repository.CustomerRepository;
 import com.example.HotelManagement.Services.CustomerServices;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/customers")
@@ -18,14 +21,20 @@ public class CustomerControllar {
         return custServices.displayCustomerDetailsById(custId);
     }
 
+    @GetMapping("/{custId}/bookings")
+    public List<Bookings> getAllBookingsOfCustomer(@PathVariable long custId)
+    {
+        return custServices.getAllBookingsOfCustomer(custId);
+    }
+
     @PostMapping("")
-    public String addCustomer(@RequestBody Customer customer){
+    public String addCustomer(@Valid @RequestBody Customer customer){
         custServices.addCustomer(customer);
         return "Customer added.";
     }
 
     @PutMapping("")
-    public String updateCustomer(@RequestBody Customer customer){
+    public String updateCustomer( @Valid @RequestBody Customer customer){
         custServices.updateCustomer(customer);
         return "Customer Updated.";
     }

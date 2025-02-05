@@ -1,17 +1,24 @@
 package com.example.HotelManagement.Services;
 
+import com.example.HotelManagement.Entities.Bookings;
 import com.example.HotelManagement.Entities.Customer;
 import com.example.HotelManagement.Exceptions.ObjectAlredyExistsException;
 import com.example.HotelManagement.Exceptions.ObjectNotExistsException;
+import com.example.HotelManagement.Repository.BookingRepository;
 import com.example.HotelManagement.Repository.CustomerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 public class CustomerServicesImpl implements CustomerServices{
 
     @Autowired
     private CustomerRepository customerRepo;
+
+    @Autowired
+    private BookingRepository bookingRepository;
 
     @Override
     public void addCustomer(Customer customer) {
@@ -47,5 +54,10 @@ public class CustomerServicesImpl implements CustomerServices{
             throw new ObjectNotExistsException("Customer not exist.");
         }
         customerRepo.deleteById(custId);
+    }
+
+    @Override
+    public List<Bookings> getAllBookingsOfCustomer(long custId) {
+        return bookingRepository.findAllByRoom_RoomId(custId);
     }
 }

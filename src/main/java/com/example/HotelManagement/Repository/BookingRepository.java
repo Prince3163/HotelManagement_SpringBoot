@@ -1,10 +1,14 @@
 package com.example.HotelManagement.Repository;
 
 import com.example.HotelManagement.Entities.Bookings;
-import org.hibernate.sql.ast.tree.expression.JdbcParameter;
+import com.example.HotelManagement.Entities.Room;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 @Repository
 public interface BookingRepository extends JpaRepository<Bookings,Long> {
+    List<Bookings> findAllByCustomer_CustId(long custId);
+    List<Bookings> findAllByRoom_RoomId(long roomId);
 }

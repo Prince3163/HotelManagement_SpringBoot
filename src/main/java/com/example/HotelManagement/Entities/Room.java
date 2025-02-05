@@ -7,6 +7,9 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Entity
 @Table(uniqueConstraints={@UniqueConstraint(columnNames ={"roomNo","hotel_id"})})
 public class Room {
@@ -30,14 +33,18 @@ public class Room {
     @JoinColumn(name = "hotel_id", nullable = false)
     private Hotel hotel;
 
-    //Use DTO classes Instead.
     @JsonProperty("HotelName")
     public String getHotelName() {
         return hotel != null ? hotel.getName() : null;
     }
 
+    @JsonIgnore
     @Enumerated(EnumType.STRING)
     private StatusOfRoom statusOfRoom = StatusOfRoom.AVAILABLE;
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "room" , cascade = CascadeType.ALL)
+    private List<Bookings> roomBookingList = new ArrayList<>();
 
     public long getRoomId() {
         return roomId;
@@ -63,6 +70,13 @@ public class Room {
         this.price = price;
     }
 
+    public List<Bookings> getRoomBookingList() {
+        return roomBookingList;
+    }
+
+    public void setRoomBookingList(List<Bookings> roomBookingList) {
+        this.roomBookingList = roomBookingList;
+    }
 
     public int getRoomNo() {
         return roomNo;
@@ -87,4 +101,5 @@ public class Room {
     public void setStatusOfRoom(StatusOfRoom statusOfRoom) {
         this.statusOfRoom = statusOfRoom;
     }
+
 }
