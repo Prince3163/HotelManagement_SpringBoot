@@ -32,7 +32,10 @@ public class RoomServicesImpl implements RoomServices{
         {
             throw new ObjectAlredyExistsException("Room_no alredy exists in this hotel.");
         }
-        Hotel hotel = hotelRepository.findById( hotelId ).get();
+
+        Hotel hotel = hotelRepository.findById(hotelId)
+                .orElseThrow( () -> new ObjectNotExistsException("Hotel Not Found.") );
+
         room.setHotel(hotel);
         roomRepository.save(room);
     }
@@ -45,7 +48,9 @@ public class RoomServicesImpl implements RoomServices{
             throw new ObjectAlredyExistsException("Room_no alredy exists in this hotel.");
         }
 
-        Hotel hotel = hotelRepository.findById(hotelId).get();
+        Hotel hotel = hotelRepository.findById(hotelId)
+                .orElseThrow( () -> new ObjectNotExistsException("Hotel Not Found.") );
+
         room.setHotel(hotel);
         roomRepository.save(room);
     }
