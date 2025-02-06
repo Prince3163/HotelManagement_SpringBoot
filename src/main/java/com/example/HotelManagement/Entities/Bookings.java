@@ -2,6 +2,7 @@ package com.example.HotelManagement.Entities;
 
 import com.example.HotelManagement.Enum.StatusOfBooking;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Future;
 import jakarta.validation.constraints.FutureOrPresent;
@@ -15,6 +16,16 @@ public class Bookings {
     @NotNull
     private long id;
 
+    @JsonProperty("RoomId")
+    public long getRoomId() {
+        return room != null ? room.getRoomId() : null;
+    }
+
+    @JsonProperty("Hotelname")
+    public String  getHotelName() {
+        return room != null ? room.getHotel().getName() : null;
+    }
+
     @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "customer_id" , nullable = false)
@@ -24,6 +35,7 @@ public class Bookings {
     @ManyToOne
     @JoinColumn(name = "room_id" , nullable = false)
     private Room room;
+
 
     @FutureOrPresent(message = "You can't book for past date.")
     private LocalDate checkInDate;

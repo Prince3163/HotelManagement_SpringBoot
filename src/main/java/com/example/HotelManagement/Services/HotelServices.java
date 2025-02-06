@@ -7,10 +7,9 @@ import java.util.List;
 
 public interface HotelServices {
 
-    public List<Hotel> displayAllHotels();
-
+    public List<Hotel> getAllHotels();
+    public Hotel getHotelById(long hotelId);
     public void addHotel(Hotel hotel);
-    public Hotel displayHotelDetailsById(long hotelId);
     public void deleteHotelById(long hotelId);
     public void updateHotel(Hotel hotel);
 

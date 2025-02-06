@@ -17,69 +17,65 @@ import java.util.List;
 public class RoomServicesImpl implements RoomServices{
 
     @Autowired
-    private RoomRepository roomRepo;
+    private RoomRepository roomRepository;
 
     @Autowired
-    public HotelRepository hotelRepo;
+    public HotelRepository hotelRepository;
 
     @Autowired
-    public BookingRepository bookingRepo;
+    public BookingRepository bookingRepository;
 
     @Override
     public void addRoom(long hotelId, Room room) {
 
-        if(roomRepo.existsByRoomNoAndHotelId(room.getRoomNo(),  hotelId))
+        if(roomRepository.existsByRoomNoAndHotelId(room.getRoomNo(),  hotelId))
         {
             throw new ObjectAlredyExistsException("Room_no alredy exists in this hotel.");
         }
-        Hotel hotel = hotelRepo.findById( hotelId ).get();
+        Hotel hotel = hotelRepository.findById( hotelId ).get();
         room.setHotel(hotel);
-        roomRepo.save(room);
+        roomRepository.save(room);
     }
 
     @Override
     public void updateRoom(long hotelId, Room room) {
 
-        if(roomRepo.existsByRoomNoAndHotelId(room.getRoomNo(),  hotelId))
+        if(roomRepository.existsByRoomNoAndHotelId(room.getRoomNo(),  hotelId))
         {
             throw new ObjectAlredyExistsException("Room_no alredy exists in this hotel.");
         }
 
-        Hotel hotel = hotelRepo.findById(hotelId).get();
+        Hotel hotel = hotelRepository.findById(hotelId).get();
         room.setHotel(hotel);
-        roomRepo.save(room);
+        roomRepository.save(room);
     }
 
     @Override
     public void deleteRoomById(long roomId) {
-        if(! roomRepo.existsById(roomId))
+        if(! roomRepository.existsById(roomId))
         {
             throw new ObjectNotExistsException("Room not exist.");
         }
-        roomRepo.deleteById(roomId);
+        roomRepository.deleteById(roomId);
     }
 
     @Override
-    public Room displayRoomDetailsById(long roomId) {
-        if(! roomRepo.existsById(roomId))
-        {
-            throw new ObjectNotExistsException("Room not exist.");
-        }
-
-        return roomRepo.findById(roomId).get();
+    public Room getRoomById(long roomId) {
+        return roomRepository.findById(roomId)
+                .orElseThrow(() -> new ObjectNotExistsException("Rom not Found."));
     }
 
     @Override
-    public String checkStatusOfRoomById(long roomId) {
-        if(! roomRepo.existsById(roomId))
+    public String getRoomStatus(long roomId) {
+        if(! roomRepository.existsById(roomId))
         {
             throw new ObjectNotExistsException("Room not exist.");
         }
-        return roomRepo.findById(roomId).get().getStatusOfRoom().toString();
+        return roomRepository.findById(roomId).get().getStatusOfRoom().toString();
     }
 
     @Override
     public List<Bookings> getAllBookingsOfRoom(long roomId) {
-        return bookingRepo.findAllByRoom_RoomId(roomId);
+        return bookingRepository.findAllByRoom_RoomId(roomId);
     }
 }

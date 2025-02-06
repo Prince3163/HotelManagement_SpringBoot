@@ -15,49 +15,49 @@ import java.util.List;
 public class CustomerServicesImpl implements CustomerServices{
 
     @Autowired
-    private CustomerRepository customerRepo;
+    private CustomerRepository customerRepository;
 
     @Autowired
     private BookingRepository bookingRepository;
 
     @Override
     public void addCustomer(Customer customer) {
-        if(customerRepo.existsByEmail(customer.getEmail()) ){
+        if(customerRepository.existsByEmail(customer.getEmail()) ){
             throw new ObjectAlredyExistsException("Customer alredy exist with this email.");
         }
-        customerRepo.save(customer);
+        customerRepository.save(customer);
     }
 
     @Override
-    public Customer displayCustomerDetailsById(long custId) {
-        if(! customerRepo.existsById(custId)){
-            throw new ObjectNotExistsException("Customer not exist.");
-        }
-        return customerRepo.findById(custId).get();
+    public Customer getCustomerById(long customerId) {
+        Customer customer =  customerRepository.findById(customerId)
+                .orElseThrow(() -> new ObjectNotExistsException("Customer not found"));
+
+        return customer;
     }
 
     @Override
     public void updateCustomer(Customer customer) {
-        if( ! customerRepo.existsById( customer.getCustId() )){
+        if( ! customerRepository.existsById( customer.getCustomerId() )){
             throw new ObjectNotExistsException("Customer not exist.");
         }
-        if(customerRepo.existsByEmail(customer.getEmail()) ){
+        if(customerRepository.existsByEmail( customer.getCustomerId() , customer.getEmail()) ){
             throw new ObjectAlredyExistsException("Customer alredy exist with this email.");
         }
 
-        customerRepo.save(customer);
+        customerRepository.save(customer);
     }
 
     @Override
-    public void deleteCustomer(long custId) {
-        if(! customerRepo.existsById(custId)){
+    public void deleteCustomer(long customerId) {
+        if(! customerRepository.existsById(customerId)){
             throw new ObjectNotExistsException("Customer not exist.");
         }
-        customerRepo.deleteById(custId);
+        customerRepository.deleteById(customerId);
     }
 
     @Override
-    public List<Bookings> getAllBookingsOfCustomer(long custId) {
-        return bookingRepository.findAllByRoom_RoomId(custId);
+    public List<Bookings> getAllBookingsOfCustomer(long customerId) {
+        return bookingRepository.findAllByCustomer_CustomerId(customerId);
     }
 }

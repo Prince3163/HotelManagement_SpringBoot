@@ -4,13 +4,14 @@ import com.example.HotelManagement.DTO.BookingRequestDTO;
 import com.example.HotelManagement.DTO.SearchRequestDTO;
 import com.example.HotelManagement.Entities.Bookings;
 import com.example.HotelManagement.Entities.Customer;
-import com.example.HotelManagement.Entities.Hotel;
 import com.example.HotelManagement.Entities.Room;
 import com.example.HotelManagement.Enum.StatusOfBooking;
+import com.example.HotelManagement.Exceptions.ObjectNotExistsException;
 import com.example.HotelManagement.Repository.BookingRepository;
 import com.example.HotelManagement.Repository.CustomerRepository;
 import com.example.HotelManagement.Repository.HotelRepository;
 import com.example.HotelManagement.Repository.RoomRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -21,20 +22,23 @@ import java.util.List;
 public class BookingServicesImpl implements BookingServices{
 
     @Autowired
-    private BookingRepository bookingRepo;
+    private BookingRepository bookingRepository;
 
     @Autowired
-    private HotelRepository hotelRepo;
+    private HotelRepository hotelRepository;
 
     @Autowired
-    private CustomerRepository customerRepo;
+    private CustomerRepository customerRepository;
 
     @Autowired
-    private RoomRepository roomRepo;
+    private RoomRepository roomRepository;
 
     @Override
-    public List<Hotel> getAllHotels() {
-        return hotelRepo.findAll();
+    public Bookings getBookingById(long bookingId) {
+        Bookings booking = bookingRepository.findById(bookingId)
+                .orElseThrow(() -> new ObjectNotExistsException("Booking not found"));
+
+        return booking;
     }
 
     @Override
@@ -44,47 +48,47 @@ public class BookingServicesImpl implements BookingServices{
         LocalDate checkInDate = searchRequestDTO.getCheckInDate();
         LocalDate checkOutDate = searchRequestDTO.getCheckOutDate();
 
-        //Auto throws if invalid.
-        dateValidation(checkInDate,checkOutDate);
+        validateDates(checkInDate,checkOutDate);
 
-        return hotelRepo.findAvailableRoomsAtLocation(location,checkInDate,checkOutDate);
+        return hotelRepository.getAvailableRoomsAtLocation(location,checkInDate,checkOutDate);
     }
 
+    @Transactional
     @Override
-    public boolean addBooking(BookingRequestDTO bookingRequestDTO) {
-        try {
-            LocalDate checkInDate = bookingRequestDTO.getCheckInDate();
-            LocalDate checkOutDate = bookingRequestDTO.getCheckOutDate();
+    public void addBooking(BookingRequestDTO bookingRequestDTO) {
 
-            dateValidation(checkInDate,checkOutDate);
+        LocalDate checkInDate = bookingRequestDTO.getCheckInDate();
+        LocalDate checkOutDate = bookingRequestDTO.getCheckOutDate();
 
-            Bookings booking = new Bookings();
+        validateDates(checkInDate,checkOutDate);
 
-            Room room = roomRepo.findById( bookingRequestDTO.getRoomId() ).get();
-            Customer customer = customerRepo.findById( bookingRequestDTO.getCustId() ).get();
+        Bookings booking = new Bookings();
 
-            booking.setRoom(room);
-            booking.setCustomer(customer);
-            booking.setCheckInDate(checkInDate);
-            booking.setCheckOutDate(checkOutDate);
+        Room room = roomRepository.findById(bookingRequestDTO.getRoomId())
+                .orElseThrow(() -> new ObjectNotExistsException("Room not found"));
 
-            bookingRepo.save(booking);
+        Customer customer = customerRepository.findById(bookingRequestDTO.getCustId())
+                .orElseThrow(() -> new ObjectNotExistsException("Customer not found"));
 
-            return true;
-        }
-        catch (Exception exception){
-            return false;
-        }
+        booking.setRoom(room);
+        booking.setCustomer(customer);
+        booking.setCheckInDate(checkInDate);
+        booking.setCheckOutDate(checkOutDate);
+
+        bookingRepository.save(booking);
     }
 
+    @Transactional
     @Override
     public void deleteBooking(long bookingId){
-        bookingRepo.findById(bookingId).get().setStatusOfBooking( StatusOfBooking.CANCELLED );
-        bookingRepo.deleteById(bookingId);
+        bookingRepository.findById(bookingId).get()
+                .setStatusOfBooking( StatusOfBooking.CANCELLED );
+
+        bookingRepository.deleteById(bookingId);
     }
 
     @Override
-    public void dateValidation(LocalDate checkInDate,LocalDate checkOutDate)
+    public void validateDates(LocalDate checkInDate,LocalDate checkOutDate)
     {
         if(checkOutDate.isBefore(checkInDate))
             throw new RuntimeException("CheckOut date must be after CheckIn date.");

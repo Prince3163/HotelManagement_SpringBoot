@@ -7,9 +7,9 @@ import java.util.List;
 
 public interface CustomerServices {
 
+    public List<Bookings> getAllBookingsOfCustomer(long customerId);
+    public Customer getCustomerById(long customerId);
     public void addCustomer(Customer customer);
-    public Customer displayCustomerDetailsById(long custId);
     public void updateCustomer(Customer customer);
-    public void deleteCustomer(long custId);
-    public List<Bookings> getAllBookingsOfCustomer(long custId);
+    public void deleteCustomer(long customerId);
 }

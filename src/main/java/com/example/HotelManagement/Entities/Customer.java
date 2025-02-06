@@ -14,7 +14,7 @@ public class Customer {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @NotNull
-    private long custId;
+    private long customerId;
 
     @NotBlank(message = "Name can't be null.")
     private String name;
@@ -26,12 +26,12 @@ public class Customer {
     @OneToMany(mappedBy = "customer" , cascade = CascadeType.ALL)
     private List<Bookings> customerBookingList = new ArrayList<>();
 
-    public long getCustId() {
-        return custId;
+    public long getCustomerId() {
+        return customerId;
     }
 
-    public void setCustId( long custId) {
-        this.custId = custId;
+    public void setCustomerId( long custId) {
+        this.customerId = custId;
     }
 
     public String getName() {
