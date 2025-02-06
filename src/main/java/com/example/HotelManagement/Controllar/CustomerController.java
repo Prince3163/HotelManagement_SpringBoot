@@ -38,13 +38,13 @@ public class CustomerController {
     @PutMapping("")
     public ResponseEntity<String> updateCustomer( @Valid @RequestBody Customer customer){
         customerServices.updateCustomer(customer);
-        return new ResponseEntity<>("Hotel Updated.", HttpStatus.OK);
+        return new ResponseEntity<>("Customer Updated.", HttpStatus.OK);
     }
 
     @DeleteMapping("/{customerId}")
     public ResponseEntity<String> deleteCustomer(@PathVariable long customerId){
         customerServices.deleteCustomer(customerId);
-        return new ResponseEntity<>("Hotel Deleted.", HttpStatus.OK);
+        return new ResponseEntity<>("Customer Deleted.", HttpStatus.OK);
     }
 
 }

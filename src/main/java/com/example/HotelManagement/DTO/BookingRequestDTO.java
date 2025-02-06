@@ -14,7 +14,7 @@ public class BookingRequestDTO {
     private long roomId;
 
     @NotNull(message = "Customer id can't be null.")
-    private long custId;
+    private long customerId;
 
     @FutureOrPresent
     @NotNull(message = "Check in date can't be null.")
@@ -37,12 +37,12 @@ public class BookingRequestDTO {
         this.roomId = roomId;
     }
 
-    public long getCustId() {
-        return custId;
+    public long getCustomerId() {
+        return customerId;
     }
 
     public void setCustId(long custId) {
-        this.custId = custId;
+        this.customerId = custId;
     }
 
     public LocalDate getCheckInDate() {

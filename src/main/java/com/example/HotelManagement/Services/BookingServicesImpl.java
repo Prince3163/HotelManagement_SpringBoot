@@ -67,7 +67,7 @@ public class BookingServicesImpl implements BookingServices{
         Room room = roomRepository.findById(bookingRequestDTO.getRoomId())
                 .orElseThrow(() -> new ObjectNotExistsException("Room not found"));
 
-        Customer customer = customerRepository.findById(bookingRequestDTO.getCustId())
+        Customer customer = customerRepository.findById(bookingRequestDTO.getCustomerId())
                 .orElseThrow(() -> new ObjectNotExistsException("Customer not found"));
 
         booking.setRoom(room);
