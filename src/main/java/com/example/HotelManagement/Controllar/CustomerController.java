@@ -12,36 +12,36 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/customers")
+@RequestMapping("/api/customers/")
 public class CustomerController {
 
     @Autowired
     private CustomerServices customerServices;
 
-    @GetMapping("/{customerId}")
+    @GetMapping("{customerId}")
     public Customer getCustomerDetails(@PathVariable long customerId){
         return customerServices.getCustomerById(customerId);
     }
 
-    @GetMapping("/{customerId}/bookings")
+    @GetMapping("{customerId}/bookings")
     public List<Bookings> getAllBookingsOfCustomer(@PathVariable long customerId)
     {
         return customerServices.getAllBookingsOfCustomer(customerId);
     }
 
-    @PostMapping("")
+    @PostMapping
     public ResponseEntity<String> addCustomer(@Valid @RequestBody Customer customer){
         customerServices.addCustomer(customer);
         return new ResponseEntity<>("Customer Added.", HttpStatus.OK);
     }
 
-    @PutMapping("")
+    @PutMapping
     public ResponseEntity<String> updateCustomer( @Valid @RequestBody Customer customer){
         customerServices.updateCustomer(customer);
         return new ResponseEntity<>("Customer Updated.", HttpStatus.OK);
     }
 
-    @DeleteMapping("/{customerId}")
+    @DeleteMapping("{customerId}")
     public ResponseEntity<String> deleteCustomer(@PathVariable long customerId){
         customerServices.deleteCustomer(customerId);
         return new ResponseEntity<>("Customer Deleted.", HttpStatus.OK);

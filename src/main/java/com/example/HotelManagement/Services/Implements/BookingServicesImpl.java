@@ -1,4 +1,4 @@
-package com.example.HotelManagement.Services;
+package com.example.HotelManagement.Services.Implements;
 
 import com.example.HotelManagement.DTO.BookingRequestDTO;
 import com.example.HotelManagement.DTO.SearchRequestDTO;
@@ -11,6 +11,7 @@ import com.example.HotelManagement.Repository.BookingRepository;
 import com.example.HotelManagement.Repository.CustomerRepository;
 import com.example.HotelManagement.Repository.HotelRepository;
 import com.example.HotelManagement.Repository.RoomRepository;
+import com.example.HotelManagement.Services.BookingServices;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -19,7 +20,7 @@ import java.time.LocalDate;
 import java.util.List;
 
 @Service
-public class BookingServicesImpl implements BookingServices{
+public class BookingServicesImpl implements BookingServices {
 
     @Autowired
     private BookingRepository bookingRepository;

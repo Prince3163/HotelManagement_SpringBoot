@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/bookings")
+@RequestMapping("/api/application/")
 public class BookingController {
 
     @Autowired
@@ -25,29 +25,35 @@ public class BookingController {
     @Autowired
     private HotelServices hotelServices;
 
-    @GetMapping("/search")
+    @GetMapping("search")
     public List<Room> getAvailableRoomsAtLocation (@Valid @RequestBody SearchRequestDTO searchRequestDTO){
         return bookingServices.getAvailableRoomsByLocation(searchRequestDTO);
     }
 
-    @GetMapping("/{bookingId}")
-    public Bookings getBookingById (@PathVariable long bookingId){
-        return bookingServices.getBookingById(bookingId);
-    }
-
-    @GetMapping("/hotels")
+    @GetMapping("hotels")
     public List<Hotel> getAllHotels(){
         return hotelServices.getAllHotels();
     }
 
-    @PostMapping("")
+    @GetMapping("hotels/{hotelId}")
+    public Hotel displayHotelDetails(@PathVariable("hotelId") long hotelId)
+    {
+        return hotelServices.getHotelById(hotelId);
+    }
+
+    @GetMapping("{bookingId}")
+    public Bookings getBookingById (@PathVariable long bookingId){
+        return bookingServices.getBookingById(bookingId);
+    }
+
+    @PostMapping
     public ResponseEntity<String> makeBooking (@Valid @RequestBody BookingRequestDTO bookingRequestDTO)
     {
         bookingServices.addBooking(bookingRequestDTO);
         return new ResponseEntity<>("Booking Confirmed.", HttpStatus.OK);
     }
 
-    @DeleteMapping("/{bookingId}")
+    @DeleteMapping("{bookingId}")
     public ResponseEntity<String> deleteBooking (@PathVariable long bookingId){
         bookingServices.deleteBooking(bookingId);
         return new ResponseEntity<>("Booking Cancelled.",HttpStatus.OK);

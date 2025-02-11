@@ -75,5 +75,4 @@ public class Hotel {
         this.email = email;
     }
 
-
 }

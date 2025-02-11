@@ -11,40 +11,39 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/hotels")
+@RequestMapping("/api/hotels/")
 public class HotelController {
 
     @Autowired
     private HotelServices hotelServices;
 
-    @GetMapping("")
+    @GetMapping
     public List<Hotel> displayAllHotels()
     {
         return hotelServices.getAllHotels();
     }
 
-    @GetMapping("/{hotelId}")
+    @GetMapping("{hotelId}")
     public Hotel displayHotelDetails(@PathVariable("hotelId") long hotelId)
     {
         return hotelServices.getHotelById(hotelId);
     }
 
-    @PostMapping("")
+    @PostMapping
     public ResponseEntity<String> addHotel(@Valid @RequestBody Hotel hotel)
     {
         hotelServices.addHotel(hotel);
         return new ResponseEntity<>("Hotel Added.", HttpStatus.OK);
     }
 
-
-    @PutMapping("")
+    @PutMapping
     public ResponseEntity<String> updateHotel(@Valid @RequestBody Hotel hotel)
     {
         hotelServices.updateHotel(hotel);
         return new ResponseEntity<>("Hotel Updated.", HttpStatus.OK);
     }
 
-    @DeleteMapping("/{hotelId}")
+    @DeleteMapping("{hotelId}")
     public ResponseEntity<String> deleteHotel(@PathVariable("hotelId") long hotelId)
     {
         hotelServices.deleteHotelById(hotelId);

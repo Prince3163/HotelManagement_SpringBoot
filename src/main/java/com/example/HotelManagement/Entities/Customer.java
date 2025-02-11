@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+import org.apache.catalina.User;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,6 +16,9 @@ public class Customer {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @NotNull
     private long customerId;
+
+    @NotNull(message = "UserId can't be null.")
+    private long userId;
 
     @NotBlank(message = "Name can't be null.")
     private String name;
@@ -32,6 +36,14 @@ public class Customer {
 
     public void setCustomerId( long custId) {
         this.customerId = custId;
+    }
+
+    public long getUserId() {
+        return userId;
+    }
+
+    public void setUserId(long userId) {
+        this.userId = userId;
     }
 
     public String getName() {

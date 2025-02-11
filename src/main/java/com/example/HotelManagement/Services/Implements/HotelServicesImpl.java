@@ -1,16 +1,17 @@
-package com.example.HotelManagement.Services;
+package com.example.HotelManagement.Services.Implements;
 
 import com.example.HotelManagement.Entities.Hotel;
 import com.example.HotelManagement.Exceptions.ObjectAlredyExistsException;
 import com.example.HotelManagement.Exceptions.ObjectNotExistsException;
 import com.example.HotelManagement.Repository.HotelRepository;
+import com.example.HotelManagement.Services.HotelServices;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
-public class HotelServicesImpl implements HotelServices{
+public class HotelServicesImpl implements HotelServices {
 
     @Autowired
     private HotelRepository hotelRepository;
@@ -33,7 +34,6 @@ public class HotelServicesImpl implements HotelServices{
             throw new ObjectNotExistsException("You can't update, Hotel not exists!!");
         }
 
-        //Modify This to accept same mail as well
         if (hotelRepository.existsByEmail(hotel.getId(), hotel.getEmail() ) ){
             throw new ObjectAlredyExistsException("You can't update, Hotel exists with same EMAIL.");
         }

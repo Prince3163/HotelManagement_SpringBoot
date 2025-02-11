@@ -1,4 +1,4 @@
-package com.example.HotelManagement.Services;
+package com.example.HotelManagement.Services.Implements;
 
 import com.example.HotelManagement.Entities.Bookings;
 import com.example.HotelManagement.Entities.Customer;
@@ -6,13 +6,14 @@ import com.example.HotelManagement.Exceptions.ObjectAlredyExistsException;
 import com.example.HotelManagement.Exceptions.ObjectNotExistsException;
 import com.example.HotelManagement.Repository.BookingRepository;
 import com.example.HotelManagement.Repository.CustomerRepository;
+import com.example.HotelManagement.Services.CustomerServices;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
-public class CustomerServicesImpl implements CustomerServices{
+public class CustomerServicesImpl implements CustomerServices {
 
     @Autowired
     private CustomerRepository customerRepository;
